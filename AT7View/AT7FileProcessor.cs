@@ -189,6 +189,7 @@ namespace AT7View
             List<byte> toAdd = new List<byte>();
             fileName = theFilename;
             theStuff.BaseStream.Position = 0;
+            
             long length = theStuff.BaseStream.Length;
             //inputFile.AddRange(theFile.ReadBytes((int)theFile.BaseStream.Length));
             //indexOnList = 0;
@@ -281,13 +282,15 @@ namespace AT7View
                 fourBytes = new byte[4];
 
                 toAdd = new List<byte>();
+                //Console.WriteLine($"Position is {theStuff.BaseStream.Position}");
                 for (int i = 0; i < 4; i++)
                 {
                     fourBytes[i] = (byte)theStuff.ReadByte();
 
                 }
+                
                 header = System.Text.Encoding.UTF8.GetString(fourBytes);
-
+                Console.WriteLine(header);
                 if (header.Equals("AT7P"))
                 {
                     /*rawData.Add(0x41);
@@ -424,8 +427,13 @@ namespace AT7View
                     theDecomp.Write(rawData.ToArray());
 
                 }*/
-
-
+                /*byte checkAA = 0;
+                checkAA = theStuff.ReadByte();
+                while(checkAA == 0xAA)
+                {
+                    checkAA = theStuff.ReadByte();
+                }
+                theStuff.BaseStream.Position -= 1;*/
 
             }
             //Now we're done decompressing, so we write to the file and close it out

@@ -89,6 +89,7 @@ namespace AT7View
             AT7FileTypes.fileTypesDict.TryGetValue(fileExtension, out fileDesc); //Nabs the file description for the display label
             fileTypeDesc.Text = fileDesc;
             buttonExtract.Enabled = true;
+            
             buttonReplace.Enabled = true;
             //Console.WriteLine(treeView1.Nodes[0].Tag.ToString());
             //Console.WriteLine("Offset: {0:X}", fileDetailsNode.getOffset() + "\n Size: {0:X}", fileDetailsNode.getSize());
@@ -206,6 +207,7 @@ namespace AT7View
                 loadThatFile();
                 Cursor = Cursors.Default;
                 recompressToolStripMenuItem.Enabled = true;
+                buttonExtractAll.Enabled = true;
                 //fileTypeDesc.ResetText();
 
             }
@@ -279,6 +281,38 @@ namespace AT7View
                 extractedYay = MessageBox.Show($"{Path.GetFileName(toExtract.FileName)} has been extracted");
 
 
+            }
+        }
+        //EXTRACT ALL FILES
+        private void buttonExtractAll_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog toExtractTo = new FolderBrowserDialog();
+            toExtractTo.Description = "Extract the contents to where?";
+            
+            DialogResult result = toExtractTo.ShowDialog();
+
+            if(result == DialogResult.OK)
+            {
+                BinaryWriter currentOutput;
+                string selFolder = toExtractTo.SelectedPath;
+                using (BinaryReader fileReader = new BinaryReader(File.Open(archiveName, FileMode.Open))) //Read the open archive to go through all the files
+                {
+                    foreach (TreeNode currentFile in treeView1.Nodes)
+                    {
+                        AT7FileNode dealingWith = currentFile.Tag as AT7FileNode;
+                        Console.WriteLine($"{selFolder}\\{dealingWith.getName()}");
+                        currentOutput = new BinaryWriter(File.Open($"{selFolder}\\{dealingWith.getName()}", FileMode.Create));
+                        fileReader.BaseStream.Position = dealingWith.getOffset();
+                        currentOutput.Write(fileReader.ReadBytes((int)dealingWith.getSize()));
+                        currentOutput.Close();
+
+                    }
+                    
+
+                }
+                
+                DialogResult extractedYay = new DialogResult();
+                extractedYay = MessageBox.Show($"All files of {Path.GetFileName(archiveName)} extracted to {selFolder}.");
             }
         }
         //REPLACE FILE
@@ -370,6 +404,7 @@ namespace AT7View
                 }
                 treeView1.Nodes.Clear();
                 buttonExtract.Enabled = false;
+                
                 buttonReplace.Enabled = false;
                 fileExtInfoBox.Text = "";
                 DialogResult replacedYay = new DialogResult();
@@ -417,6 +452,7 @@ namespace AT7View
                 recompressedTheFile = MessageBox.Show("Recompressed the file.\n" + "Start: " + recompStart.ToString() + "\nFinish: " + recompEnd.ToString());
             }
         }
+
         
     }
 }

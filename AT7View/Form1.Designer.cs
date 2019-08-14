@@ -47,6 +47,7 @@
             this.infoTools = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.buttonExtractAll = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.fileExtInfoBox.SuspendLayout();
@@ -116,6 +117,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.buttonExtractAll);
             this.groupBox1.Controls.Add(this.buttonReplace);
             this.groupBox1.Controls.Add(this.fileExtInfoBox);
             this.groupBox1.Controls.Add(this.buttonExtract);
@@ -130,7 +132,7 @@
             // buttonReplace
             // 
             this.buttonReplace.Enabled = false;
-            this.buttonReplace.Location = new System.Drawing.Point(16, 133);
+            this.buttonReplace.Location = new System.Drawing.Point(16, 161);
             this.buttonReplace.Name = "buttonReplace";
             this.buttonReplace.Size = new System.Drawing.Size(75, 23);
             this.buttonReplace.TabIndex = 3;
@@ -199,6 +201,18 @@
             // 
             this.backgroundWorker1.WorkerReportsProgress = true;
             // 
+            // buttonExtractAll
+            // 
+            this.buttonExtractAll.Enabled = false;
+            this.buttonExtractAll.Location = new System.Drawing.Point(16, 132);
+            this.buttonExtractAll.Name = "buttonExtractAll";
+            this.buttonExtractAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonExtractAll.TabIndex = 4;
+            this.buttonExtractAll.Text = "Extract All";
+            this.toolTip1.SetToolTip(this.buttonExtractAll, "Extracts all the files from this archive.");
+            this.buttonExtractAll.UseVisualStyleBackColor = true;
+            this.buttonExtractAll.Click += new System.EventHandler(this.buttonExtractAll_Click);
+            // 
             // AT7View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +255,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ToolStripMenuItem recompressToolStripMenuItem;
+        private System.Windows.Forms.Button buttonExtractAll;
     }
 }
 
