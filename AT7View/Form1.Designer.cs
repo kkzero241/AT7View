@@ -39,6 +39,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonExtractAll = new System.Windows.Forms.Button();
             this.buttonReplace = new System.Windows.Forms.Button();
             this.fileExtInfoBox = new System.Windows.Forms.GroupBox();
             this.fileTypeDesc = new System.Windows.Forms.Label();
@@ -47,7 +48,7 @@
             this.infoTools = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.buttonExtractAll = new System.Windows.Forms.Button();
+            this.buttonExportAs = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.fileExtInfoBox.SuspendLayout();
@@ -117,6 +118,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.buttonExportAs);
             this.groupBox1.Controls.Add(this.buttonExtractAll);
             this.groupBox1.Controls.Add(this.buttonReplace);
             this.groupBox1.Controls.Add(this.fileExtInfoBox);
@@ -128,6 +130,18 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Info and Tools";
+            // 
+            // buttonExtractAll
+            // 
+            this.buttonExtractAll.Enabled = false;
+            this.buttonExtractAll.Location = new System.Drawing.Point(16, 132);
+            this.buttonExtractAll.Name = "buttonExtractAll";
+            this.buttonExtractAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonExtractAll.TabIndex = 4;
+            this.buttonExtractAll.Text = "Extract All";
+            this.toolTip1.SetToolTip(this.buttonExtractAll, "Extracts all the files from this archive.");
+            this.buttonExtractAll.UseVisualStyleBackColor = true;
+            this.buttonExtractAll.Click += new System.EventHandler(this.buttonExtractAll_Click);
             // 
             // buttonReplace
             // 
@@ -201,17 +215,17 @@
             // 
             this.backgroundWorker1.WorkerReportsProgress = true;
             // 
-            // buttonExtractAll
+            // buttonExportAs
             // 
-            this.buttonExtractAll.Enabled = false;
-            this.buttonExtractAll.Location = new System.Drawing.Point(16, 132);
-            this.buttonExtractAll.Name = "buttonExtractAll";
-            this.buttonExtractAll.Size = new System.Drawing.Size(75, 23);
-            this.buttonExtractAll.TabIndex = 4;
-            this.buttonExtractAll.Text = "Extract All";
-            this.toolTip1.SetToolTip(this.buttonExtractAll, "Extracts all the files from this archive.");
-            this.buttonExtractAll.UseVisualStyleBackColor = true;
-            this.buttonExtractAll.Click += new System.EventHandler(this.buttonExtractAll_Click);
+            this.buttonExportAs.Enabled = false;
+            this.buttonExportAs.Location = new System.Drawing.Point(97, 104);
+            this.buttonExportAs.Name = "buttonExportAs";
+            this.buttonExportAs.Size = new System.Drawing.Size(75, 23);
+            this.buttonExportAs.TabIndex = 5;
+            this.buttonExportAs.Text = "Export As";
+            this.toolTip1.SetToolTip(this.buttonExportAs, "Export the selected file to another format.");
+            this.buttonExportAs.UseVisualStyleBackColor = true;
+            this.buttonExportAs.Click += new System.EventHandler(this.buttonExportAs_Click);
             // 
             // AT7View
             // 
@@ -256,6 +270,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ToolStripMenuItem recompressToolStripMenuItem;
         private System.Windows.Forms.Button buttonExtractAll;
+        private System.Windows.Forms.Button buttonExportAs;
     }
 }
 

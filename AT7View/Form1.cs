@@ -89,7 +89,13 @@ namespace AT7View
             AT7FileTypes.fileTypesDict.TryGetValue(fileExtension, out fileDesc); //Nabs the file description for the display label
             fileTypeDesc.Text = fileDesc;
             buttonExtract.Enabled = true;
-            
+            buttonExportAs.Enabled = false;
+            buttonExportAs.Text = "Export As";
+            if (fileName.Equals("gmm.txt"))
+            {
+                buttonExportAs.Enabled = true;
+                buttonExportAs.Text = "Export .csv";
+            }
             buttonReplace.Enabled = true;
             //Console.WriteLine(treeView1.Nodes[0].Tag.ToString());
             //Console.WriteLine("Offset: {0:X}", fileDetailsNode.getOffset() + "\n Size: {0:X}", fileDetailsNode.getSize());
@@ -314,6 +320,84 @@ namespace AT7View
                 DialogResult extractedYay = new DialogResult();
                 extractedYay = MessageBox.Show($"All files of {Path.GetFileName(archiveName)} extracted to {selFolder}.");
             }
+        }
+        //EXPORT FILE AS
+        private void buttonExportAs_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog toExtract = new SaveFileDialog();
+            string newExt = ""; //This is the file extension of the exported file
+
+            if(buttonExportAs.Text.Equals("Export .csv"))
+            {
+                newExt = ".csv";
+            }
+
+            toExtract.Filter = $"{newExt} files|*{newExt}|All files (*.*)|*.*";
+            toExtract.FilterIndex = 0;
+            toExtract.OverwritePrompt = true;
+            toExtract.RestoreDirectory = true;
+            toExtract.FileName = fileName.Replace(fileExtension, newExt);
+            toExtract.Title = $"Export {toExtract.FileName} where?";
+
+            if (toExtract.ShowDialog() == DialogResult.OK)
+            {
+                if (newExt.Equals(".csv"))
+                {
+                    using (StreamWriter csvExport = new StreamWriter(toExtract.FileName, false, Encoding.GetEncoding("shift-jis")))
+                    {
+
+                        fileBeingExtracted = new byte[fileSize];
+
+                        using (BinaryReader fileReader = new BinaryReader(File.Open(archiveName, FileMode.Open))) //Read the open archive to grab what we want to extract
+                        {
+                            fileReader.BaseStream.Position = fileOffset;
+                            fileReader.ReadBytes((int)fileSize).CopyTo(fileBeingExtracted, 0);
+
+                        }
+
+                        using (BinaryWriter outputFile = new BinaryWriter(File.Open("temp.txt", FileMode.Create))) //Output what was ripped from the archive to a new file on disk
+                        {
+                            Console.WriteLine(fileName);
+                            for (int k = 0; k < fileSize; k++)
+                            {
+                                outputFile.Write(fileBeingExtracted[k]);
+                            }
+
+
+                        }
+                        StreamReader toTakeFrom = new StreamReader("temp.txt", Encoding.GetEncoding("shift-jis"));
+
+                        string nextLine = "";
+                        //byte[] nextString;
+                        //bool exceptionThrown = false;
+                        while (!nextLine.Equals("$$$")) //gmm.text ends with "$$$"
+                        {
+                            try
+                            {
+                                nextLine = toTakeFrom.ReadLine();
+                                //nextLine = Convert.ToBase64String(nextString); //Encoding.GetEncoding("shift-jis"));
+                                if (nextLine.IndexOf("001=") == 0) //This is what the very beginning of gmm starts with
+                                {
+                                    nextLine = nextLine.Remove(0, 4);
+                                }
+                                else if (nextLine.IndexOf("=") == 0) //Everything else that isn't the end starts with this
+                                {
+                                    nextLine = nextLine.Remove(0, 1);
+                                }
+                                csvExport.WriteLine($"\"{nextLine}\"");
+                            }
+                            catch (System.IndexOutOfRangeException)
+                            {
+                                break;
+                            }
+                        }
+                        toTakeFrom.Close();
+                    }
+                }
+                DialogResult extractedYay = new DialogResult();
+                extractedYay = MessageBox.Show($"{Path.GetFileName(toExtract.FileName)} has been exported.");
+            }
+
         }
         //REPLACE FILE
         private void buttonReplace_Click(object sender, EventArgs e)
