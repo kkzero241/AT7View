@@ -96,6 +96,11 @@ namespace AT7View
                 buttonExportAs.Enabled = true;
                 buttonExportAs.Text = "Export .csv";
             }
+            else if (fileExtension.Equals(".tex"))
+            {
+                buttonExportAs.Enabled = true;
+                buttonExportAs.Text = "Export .tpl";
+            }
             buttonReplace.Enabled = true;
             //Console.WriteLine(treeView1.Nodes[0].Tag.ToString());
             //Console.WriteLine("Offset: {0:X}", fileDetailsNode.getOffset() + "\n Size: {0:X}", fileDetailsNode.getSize());
@@ -331,6 +336,10 @@ namespace AT7View
             {
                 newExt = ".csv";
             }
+            else if (buttonExportAs.Text.Equals("Export .tpl"))
+            {
+                newExt = ".tpl";
+            }
 
             toExtract.Filter = $"{newExt} files|*{newExt}|All files (*.*)|*.*";
             toExtract.FilterIndex = 0;
@@ -394,6 +403,75 @@ namespace AT7View
                         toTakeFrom.Close();
                     }
                 }
+                if (newExt.Equals(".tpl"))
+                {
+                    fileBytes = new List<byte>();
+                    using (BinaryReader fileReader = new BinaryReader(File.Open(archiveName, FileMode.Open))) //Read the open archive to grab what we want to extract
+                    {
+                        fileReader.BaseStream.Position = fileOffset;
+                        fileBytes.AddRange(fileReader.ReadBytes((int)fileSize));
+
+                    }
+
+                    using (BinaryWriter outputFile = new BinaryWriter(File.Open(toExtract.FileName, FileMode.Create))) //Output what was ripped from the archive to a new file on disk
+                    {
+                        //These next 4 writes are the tpl header
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x20);
+                        outputFile.Write((byte)0xAF);
+                        outputFile.Write((byte)0x30);
+                        //Number of images, it's always 1 in this game
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x01);
+                        //Image table offset, always 0x0C
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x0C);
+                        //Image header offset, always gonna be 20
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x20);
+                        //Filler bytes to ensure the above pointers work
+                        for(int i = 0; i < 16; i++)
+                        {
+                            outputFile.Write((byte)0x00);
+                        }
+
+                        UInt32 fileHeaderOffset = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), 4)); //Offset that points to the offset of the actual data in the SIR0
+                        UInt32 imageHeaderOffset = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)fileHeaderOffset)); //Points to the image header
+                        UInt32 imageDataStart = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)fileHeaderOffset + 4)); //Where the image data begins right after the above header
+                        UInt32 imageDataEnd = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)fileHeaderOffset + 8)); //Where the image data ends
+                        
+                        /*
+                        UInt32 imageWidth = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)imageHeaderOffset)); 
+                        UInt32 imageHeight = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)imageHeaderOffset + 4));
+                        UInt32 imageFormat = ReverseBytes(BitConverter.ToUInt32(fileBytes.ToArray(), (int)imageHeaderOffset + 8));
+                        */
+
+                        outputFile.Write(BitConverter.ToUInt16(fileBytes.ToArray(), (int)imageHeaderOffset + 6)); //Height
+                        outputFile.Write(BitConverter.ToUInt16(fileBytes.ToArray(), (int)imageHeaderOffset + 2)); //Width
+                        outputFile.Write(BitConverter.ToUInt32(fileBytes.ToArray(), (int)imageHeaderOffset + 8)); //Format
+                        //Image data starts at 0x60
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x00);
+                        outputFile.Write((byte)0x60);
+                        //Again, write filler bytes to make the above pointer work
+                        for (int i = 0; i < 0x34; i++)
+                        {
+                            outputFile.Write((byte)0x00);
+                        }
+                        //And finally write all the image data to the tpl export
+                        outputFile.Write(fileBytes.GetRange((int)imageDataStart, (int)(imageDataEnd - imageDataStart)).ToArray());
+                        
+                    }
+
+                }
+
                 DialogResult extractedYay = new DialogResult();
                 extractedYay = MessageBox.Show($"{Path.GetFileName(toExtract.FileName)} has been exported.");
             }
