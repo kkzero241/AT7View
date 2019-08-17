@@ -483,6 +483,8 @@ namespace AT7View
             
             OpenFileDialog toReplace = new OpenFileDialog();
             toReplace.Title = $"Replace {fileName} with what?";
+            toReplace.Filter = $"{fileExtension} files|*{fileExtension}|All files (*.*)|*.*";
+            toReplace.FilterIndex = 0;
             DialogResult result = toReplace.ShowDialog();
             //DialogResult.
             if (result == DialogResult.OK)
