@@ -34,4 +34,5 @@ That being said, if you do experience issues with launching modded files, let me
 ## Credits
 -Mark James for the [Silk Icon Set](http://www.famfamfam.com/lab/icons/silk/).  
 -Huge thanks to Platinum Lucario and MegaMinerd from Project Pokémon for [their AT7 container research](https://projectpokemon.org/home/forums/topic/43882-pmd-wiiware-at7-file-container-format/). Couldn't have done this without it.\
+-Also thanks to psy_commando for providing documentation on some of the formats that happened to be in these games as well as PMD2. Mainly the SIR0 archive format.\
 -Nintendo/Chunsoft for these overlooked games. C'mon guys, they're not *that* bad. :P
