@@ -617,6 +617,9 @@ namespace AT7View
             }
         }
 
-        
+        private void howtoGuideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/kkzero241/AT7View/blob/master/README.md#how-to");
+        }
     }
 }

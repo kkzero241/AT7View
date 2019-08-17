@@ -34,11 +34,10 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recompressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonExportAs = new System.Windows.Forms.Button();
             this.buttonExtractAll = new System.Windows.Forms.Button();
             this.buttonReplace = new System.Windows.Forms.Button();
             this.fileExtInfoBox = new System.Windows.Forms.GroupBox();
@@ -48,7 +47,9 @@
             this.infoTools = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.buttonExportAs = new System.Windows.Forms.Button();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.howtoGuideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.fileExtInfoBox.SuspendLayout();
@@ -84,35 +85,23 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
             // recompressToolStripMenuItem
             // 
             this.recompressToolStripMenuItem.Enabled = false;
+            this.recompressToolStripMenuItem.Image = global::AT7View.Properties.Resources.compress;
             this.recompressToolStripMenuItem.Name = "recompressToolStripMenuItem";
-            this.recompressToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.recompressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.recompressToolStripMenuItem.Text = "Recompress";
             this.recompressToolStripMenuItem.Click += new System.EventHandler(this.recompressToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.howtoGuideToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -130,6 +119,18 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Info and Tools";
+            // 
+            // buttonExportAs
+            // 
+            this.buttonExportAs.Enabled = false;
+            this.buttonExportAs.Location = new System.Drawing.Point(97, 104);
+            this.buttonExportAs.Name = "buttonExportAs";
+            this.buttonExportAs.Size = new System.Drawing.Size(75, 23);
+            this.buttonExportAs.TabIndex = 5;
+            this.buttonExportAs.Text = "Export As";
+            this.toolTip1.SetToolTip(this.buttonExportAs, "Export the selected file to another format.");
+            this.buttonExportAs.UseVisualStyleBackColor = true;
+            this.buttonExportAs.Click += new System.EventHandler(this.buttonExportAs_Click);
             // 
             // buttonExtractAll
             // 
@@ -215,17 +216,29 @@
             // 
             this.backgroundWorker1.WorkerReportsProgress = true;
             // 
-            // buttonExportAs
+            // openToolStripMenuItem
             // 
-            this.buttonExportAs.Enabled = false;
-            this.buttonExportAs.Location = new System.Drawing.Point(97, 104);
-            this.buttonExportAs.Name = "buttonExportAs";
-            this.buttonExportAs.Size = new System.Drawing.Size(75, 23);
-            this.buttonExportAs.TabIndex = 5;
-            this.buttonExportAs.Text = "Export As";
-            this.toolTip1.SetToolTip(this.buttonExportAs, "Export the selected file to another format.");
-            this.buttonExportAs.UseVisualStyleBackColor = true;
-            this.buttonExportAs.Click += new System.EventHandler(this.buttonExportAs_Click);
+            this.openToolStripMenuItem.Image = global::AT7View.Properties.Resources.add;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // howtoGuideToolStripMenuItem
+            // 
+            this.howtoGuideToolStripMenuItem.Image = global::AT7View.Properties.Resources.page_world;
+            this.howtoGuideToolStripMenuItem.Name = "howtoGuideToolStripMenuItem";
+            this.howtoGuideToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.howtoGuideToolStripMenuItem.Text = "How-to Guide";
+            this.howtoGuideToolStripMenuItem.Click += new System.EventHandler(this.howtoGuideToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::AT7View.Properties.Resources.help;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // AT7View
             // 
@@ -271,6 +284,7 @@
         private System.Windows.Forms.ToolStripMenuItem recompressToolStripMenuItem;
         private System.Windows.Forms.Button buttonExtractAll;
         private System.Windows.Forms.Button buttonExportAs;
+        private System.Windows.Forms.ToolStripMenuItem howtoGuideToolStripMenuItem;
     }
 }
 
